@@ -15,7 +15,7 @@ let
       pkgs = stable;
     }
   ).override {
-    overrides = _: _: {
+    overrides = hself: hsuper: {
       # Disable GHC 8.6.x core libraries.
       array = null;
       base = null;
@@ -49,6 +49,13 @@ let
       transformers = null;
       unix = null;
       xhtml = null;
+
+      mkDerivation = args: hsuper.mkDerivation (
+        args // {
+          enableLibraryProfiling = false;
+          doHaddock = false;
+        }
+      );
     };
   };
 
@@ -57,7 +64,7 @@ let
       pkgs = unstable;
     }
   ).override {
-    overrides = _: _: {
+    overrides = hself: hsuper: {
       # Disable GHC 8.8.x core libraries.
       array = null;
       base = null;
@@ -91,6 +98,13 @@ let
       transformers = null;
       unix = null;
       xhtml = null;
+
+      mkDerivation = args: hsuper.mkDerivation (
+        args // {
+          enableLibraryProfiling = false;
+          doHaddock = false;
+        }
+      );
     };
   };
 

@@ -12,3 +12,4 @@ jobs:
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        attributes: "hie"

@@ -108,11 +108,18 @@ let
     };
   };
 
-  inherit (stable.haskell.lib) justStaticExecutables;
+  inherit (unstable.haskell.lib)
+    justStaticExecutables
+    ;
+  inherit (unstable.lib)
+    recurseIntoAttrs
+    ;
 in
 {
-  hie = {
-    ghc865 = justStaticExecutables hie-ghc-865.haskell-ide-engine;
-    ghc882 = justStaticExecutables hie-ghc-882.haskell-ide-engine;
-  };
+  hie = recurseIntoAttrs (
+    {
+      ghc865 = justStaticExecutables hie-ghc-865.haskell-ide-engine;
+      ghc882 = justStaticExecutables hie-ghc-882.haskell-ide-engine;
+    }
+  );
 }

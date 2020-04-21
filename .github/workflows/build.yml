@@ -1,16 +1,17 @@
 name: "build"
-# on:
-#  pull_request:
-#  push:
+on:
+  pull_request:
+  push:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: GHC 8.6.5
-    - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v7
-    - uses: cachix/cachix-action@v5
-      with:
-        name: nix-hie
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie.ghc-865"
+      uses: 
+        actions/checkout@v2:
+        cachix/install-nix-action@v7:
+        cachix/cachix-action@v5:
+          with:
+            name: nix-hie
+            signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+            attributes: "hie.ghc-865"

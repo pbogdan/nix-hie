@@ -1,14 +1,14 @@
 name: "build"
-on:
-  pull_request:
-  push:
+#on:
+#  pull_request:
+#  push:
 jobs:
-  defaults:
-    runs-on: ubuntu-latest
-    uses: actions/checkout@v2
-    uses: cachix/install-nix-action@v7
-  ghc-865:
-    name: GHC 8.6.5
+  build:
+    defaults:
+      runs-on: ubuntu-latest
+      uses:
+      - actions/checkout@v2
+      - cachix/install-nix-action@v7
     steps:
     - name: GHC 8.6.5
       uses: cachix/cachix-action@v5

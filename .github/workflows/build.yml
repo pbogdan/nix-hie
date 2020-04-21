@@ -6,10 +6,25 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v7
-    - uses: cachix/cachix-action@v5
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Nix
+      uses: cachix/install-nix-action@v7
+    - name: Build (GHC 8.6.5)
+      uses: cachix/cachix-action@v5
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie"
+        attributes: "hie.ghc-865"
+    - name: Build (GHC 8.8.2)
+      uses: cachix/cachix-action@v5
+      with:
+        name: nix-hie
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        attributes: "hie.ghc-882"
+    - name: Build (GHC 8.8.3)
+      uses: cachix/cachix-action@v5
+      with:
+        name: nix-hie
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        attributes: "hie.ghc-883"

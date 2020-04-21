@@ -1,15 +1,29 @@
-name: "Build"
+name: "build"
 on:
   pull_request:
   push:
 jobs:
-  tests:
-    runs-on: ubuntu-latest
+  build:
+    defaults:
+      runs-on: ubuntu-latest
+      uses: actions/checkout@v2
+      uses: cachix/install-nix-action@v7
     steps:
-    - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v7
-    - uses: cachix/cachix-action@v5
-      with:
-        name: nix-hie
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie"
+    - name: GHC 8.6.5
+      uses: cachix/cachix-action@v5
+        with:
+          name: nix-hie
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          attributes: "hie.ghc-865"
+    - name: GHC 8.8.2
+      uses: cachix/cachix-action@v5
+        with:
+          name: nix-hie
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          attributes: "hie.ghc-882"
+    - name: GHC 8.8.3
+      uses: cachix/cachix-action@v5
+        with:
+          name: nix-hie
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          attributes: "hie.ghc-883"

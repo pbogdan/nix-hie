@@ -4,11 +4,10 @@ on:
   push:
 jobs:
   build:
-    defaults:
-      runs-on: ubuntu-latest
-      uses:
-      - actions/checkout@v2
-      - cachix/install-nix-action@v7
+    runs-on: ubuntu-latest
+    uses:
+    - actions/checkout@v2
+    - cachix/install-nix-action@v7
     steps:
     - name: GHC 8.6.5
       uses: cachix/cachix-action@v5

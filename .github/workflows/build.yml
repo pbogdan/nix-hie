@@ -1,7 +1,7 @@
 name: "build"
-on:
-  pull_request:
-  push:
+# on:
+#  pull_request:
+#  push:
 jobs:
   defaults:
     runs-on: ubuntu-latest
@@ -11,7 +11,7 @@ jobs:
     name: GHC 8.6.5
     steps:
     - name: GHC 8.6.5
-    - uses: cachix/cachix-action@v5
+      uses: cachix/cachix-action@v5
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'

@@ -16,3 +16,9 @@ jobs:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         attributes: "hie.ghc-865"
+    - name: GHC 8.8.2
+      uses: cachix/cachix-action@v5
+      with:
+        name: nix-hie
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        attributes: "hie.ghc-882"

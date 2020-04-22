@@ -16,12 +16,16 @@ jobs:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         attributes: "hie.ghc-865"
+    - name: GC
+      run: nix-collect-garbage -d
     - name: Build (GHC 8.8.2)
       uses: cachix/cachix-action@v5
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         attributes: "hie.ghc-882"
+    - name: GC
+      run: nix-collect-garbage -d
     - name: Build (GHC 8.8.3)
       uses: cachix/cachix-action@v5
       with:

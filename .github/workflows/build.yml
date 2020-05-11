@@ -1,34 +1,49 @@
 name: "Build"
+
 on:
   pull_request:
   push:
+
 jobs:
-  tests:
+  ghc-865:
+    name: GHC 8.6.5
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install Nix
-      uses: cachix/install-nix-action@v7
-    - name: Build (GHC 8.6.5)
-      uses: cachix/cachix-action@v5
+      uses: cachix/install-nix-action@v8
+    - name: Cachix
+      uses: cachix/cachix-action@v6
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie.ghc-865"
-    - name: GC
-      run: nix-collect-garbage -d
-    - name: Build (GHC 8.8.2)
-      uses: cachix/cachix-action@v5
+    - run: nix build -f . hie.ghc-865
+  ghc-882:
+    name: GHC 8.8.2
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Nix
+      uses: cachix/install-nix-action@v8
+    - name: Cachix
+      uses: cachix/cachix-action@v6
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie.ghc-882"
-    - name: GC
-      run: nix-collect-garbage -d
-    - name: Build (GHC 8.8.3)
-      uses: cachix/cachix-action@v5
+    - run: nix build -f . hie.ghc-882
+  ghc-883:
+    name: GHC 8.8.2
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Nix
+      uses: cachix/install-nix-action@v8
+    - name: Cachix
+      uses: cachix/cachix-action@v6
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        attributes: "hie.ghc-883"
+    - run: nix build -f . hie.ghc-883

@@ -11,6 +11,18 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/e89b1063fb586ef8d3f2f4a3fbde4d5f8ce47cc7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "stack2nix": {
+        "branch": "master",
+        "description": "Generate nix expressions for Haskell projects",
+        "homepage": null,
+        "owner": "pbogdan",
+        "repo": "stack2nix",
+        "rev": "ff10e7a511b2c7fb019b49969cfdc53314079abb",
+        "sha256": "1fafpc14cvrphc2sfq5ilb2xz8k9xar95vdap17w1daijsybzqr6",
+        "type": "tarball",
+        "url": "https://github.com/pbogdan/stack2nix/archive/ff10e7a511b2c7fb019b49969cfdc53314079abb.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "unstable": {
         "branch": "nixos-unstable",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",

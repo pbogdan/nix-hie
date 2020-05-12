@@ -34,7 +34,7 @@ jobs:
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
     - run: nix build -f . hie.ghc-882
   ghc-883:
-    name: GHC 8.8.2
+    name: GHC 8.8.3
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

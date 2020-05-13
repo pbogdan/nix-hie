@@ -4,7 +4,7 @@ let
   # 20.03 with GHC 8.6.5 as default and with glibc 2.30
   stable = import sources.stable {};
 
-  # nixpkgs-unstable with GHC 8.8.2 as default and with glibc 2.30
+  # nixos-unstable with GHC 8.8.3 as default and with glibc 2.30
   unstable = import sources.unstable {};
 
   inherit (unstable.haskell.lib)
@@ -16,6 +16,8 @@ let
     lib
     remove-references-to
     ;
+
+  undotted = x: lib.replaceChars [ "." ] [ "" ] x;
 
   # We need to explicitly disable GHC core libraries here. stack2nix does null some of them out but
   # has not been updated for newer GHC versions so few of them are missing. The lists of the core
@@ -56,6 +58,8 @@ let
                         hsuper.haskell-ide-engine
                         (
                           drv: {
+                            pname = "hie-ghc${undotted hself.ghc.version}";
+
                             postInstall = drv.postInstall or "" + ''
                               remove-references-to -t ${hself.ghc} $out/bin/hie{,-wrapper}
                             '';
@@ -206,9 +210,75 @@ let
           }
         );
       };
+
+  hies = lib.mapAttrs (_: hie-pkg-set: hie-pkg-set.haskell-ide-engine) hie-pkg-sets;
+
+  compose = selector:
+    let
+      selected = lib.unique (lib.attrValues (selector hies));
+
+      ghc-versions = builtins.map (hie: hie.compiler.version) selected;
+
+      versioned = builtins.map
+        (
+          hie:
+            let
+              v = hie.compiler.version;
+              v-mm = lib.versions.majorMinor v;
+              priority = - lib.toInt (undotted v);
+              drv = lib.addMetaAttrs { inherit priority; } (
+                unstable.runCommandNoCC hie.name {} ''
+                  mkdir -p $out/bin
+                  ln -s ${hie}/bin/hie $out/bin/hie-${v}
+                  ln -s ${hie}/bin/hie $out/bin/hie-${v-mm}
+                ''
+              );
+            in drv
+        ) selected;
+
+      newest = lib.head (
+        lib.sort
+          (a: b: builtins.compareVersions a.compiler.version b.compiler.version > -1)
+          selected
+      );
+
+      dummy = unstable.writeShellScriptBin "hie" ''
+        echo We were unable to detect a matching HIE for the GHC used in your project
+
+        ghc=$(command -v ghc)
+
+        if [ -n "$ghc" ]; then
+            v=$(ghc --numeric-version)
+            echo
+            echo "Found GHC $v in PATH"
+            echo "Selected HIE's support: ${lib.concatStringsSep " " ghc-versions}"
+            echo
+        fi
+
+        exit 1
+      '';
+
+      hie-env = unstable.buildEnv {
+        name = "hie-env";
+        paths = versioned;
+        pathsToLink = [ "/bin" ];
+      };
+
+      multi = unstable.runCommandNoCC "hie-multi" {
+        nativeBuildInputs = [ unstable.makeWrapper ];
+      } ''
+        mkdir -p $out/bin
+        cp ${newest}/bin/hie-wrapper $out/bin/hie
+
+        wrapProgram $out/bin/hie \
+            --prefix PATH ":" "${lib.makeBinPath [ dummy hie-env ]}"
+      '';
+    in if lib.length selected == 0
+    then throw "You must select at least one HIE version!"
+    else multi;
 in
 {
-  hie = lib.recurseIntoAttrs (
-    lib.genAttrs [ "ghc-865" "ghc-882" "ghc-883" ] (name: hie-pkg-sets.${name}.haskell-ide-engine)
-  );
+  hie = lib.recurseIntoAttrs hies // {
+    inherit compose;
+  };
 }

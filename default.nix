@@ -269,6 +269,7 @@ let
       } ''
         mkdir -p $out/bin
         cp ${newest}/bin/hie-wrapper $out/bin/hie
+        ln -s hie $out/bin/hie-wrapper
 
         wrapProgram $out/bin/hie \
             --prefix PATH ":" "${lib.makeBinPath [ dummy hie-env ]}"

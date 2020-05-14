@@ -227,7 +227,7 @@ let
               v-mm = lib.versions.majorMinor v;
               priority = - lib.toInt (undotted v);
               drv = lib.addMetaAttrs { inherit priority; } (
-                unstable.runCommandNoCC hie.name {} ''
+                unstable.runCommandNoCCLocal hie.name {} ''
                   mkdir -p $out/bin
                   ln -s ${hie}/bin/hie $out/bin/hie-${v}
                   ln -s ${hie}/bin/hie $out/bin/hie-${v-mm}
@@ -264,7 +264,7 @@ let
         pathsToLink = [ "/bin" ];
       };
 
-      multi = unstable.runCommandNoCC "hie-multi" {
+      multi = unstable.runCommandNoCCLocal "hie-multi" {
         nativeBuildInputs = [ unstable.makeWrapper ];
       } ''
         mkdir -p $out/bin

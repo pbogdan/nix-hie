@@ -17,10 +17,10 @@
         "homepage": null,
         "owner": "pbogdan",
         "repo": "stack2nix",
-        "rev": "ff10e7a511b2c7fb019b49969cfdc53314079abb",
-        "sha256": "1fafpc14cvrphc2sfq5ilb2xz8k9xar95vdap17w1daijsybzqr6",
+        "rev": "4aaca453fc34d6568c207b56f9df3b24b472f7de",
+        "sha256": "1c0736cv77apcva0qnbzlh1dp9j59dfipld2x7qf6jj6awdmc07m",
         "type": "tarball",
-        "url": "https://github.com/pbogdan/stack2nix/archive/ff10e7a511b2c7fb019b49969cfdc53314079abb.tar.gz",
+        "url": "https://github.com/pbogdan/stack2nix/archive/4aaca453fc34d6568c207b56f9df3b24b472f7de.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "unstable": {

@@ -1,10 +1,5 @@
+{ sources ? import ./nix/sources.nix }:
 let
-  sources = import ./nix/sources.nix;
-
-  # 20.03 with GHC 8.6.5 as default and with glibc 2.30
-  stable = import sources.stable {};
-
-  # nixos-unstable with GHC 8.8.3 as default and with glibc 2.30
   unstable = import sources.unstable {};
 
   inherit (unstable.haskell.lib)
@@ -74,7 +69,7 @@ let
       {
         ghc-865 = (
           import ./hie/ghc-8.6.5.nix {
-            pkgs = stable;
+            pkgs = unstable;
           }
         ).override (
           old: {

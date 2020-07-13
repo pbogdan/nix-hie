@@ -1,16 +1,4 @@
 {
-    "stable": {
-        "branch": "nixos-20.03",
-        "description": "Nix Packages collection",
-        "homepage": null,
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "674ab2dffa58dab8b6a97a26a0156133dbd90378",
-        "sha256": "05psgbg86kvivnch432f1b3xsvn6004hdak92zq8ifrw1hn72f19",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/674ab2dffa58dab8b6a97a26a0156133dbd90378.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "stack2nix": {
         "branch": "master",
         "description": "Generate nix expressions for Haskell projects",

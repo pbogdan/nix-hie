@@ -1,11 +1,11 @@
 let
   sources = import ./nix/sources.nix;
-  pkgs = import sources.unstable {};
+  pkgs = import sources.unstable { };
   inherit (pkgs)
     mkShell
     writeShellScriptBin
-  ;
-  stack2nix = import sources.stack2nix {};
+    ;
+  stack2nix = import sources.stack2nix { };
   script = writeShellScriptBin "update.sh" ''
     rev=$1
 

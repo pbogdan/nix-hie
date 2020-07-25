@@ -2,10 +2,10 @@ let
   sources = import ./nix/sources.nix;
 
   # 20.03 with GHC 8.6.5 as default and with glibc 2.30
-  stable = import sources.stable {};
+  stable = import sources.stable { };
 
   # nixos-unstable with GHC 8.8.3 as default and with glibc 2.30
-  unstable = import sources.unstable {};
+  unstable = import sources.unstable { };
 
   inherit (unstable.haskell.lib)
     justStaticExecutables
@@ -30,7 +30,7 @@ let
           pkg-set.override (
             old: {
               # common overrides applicable to all sets
-              overrides = lib.composeExtensions (old.overrides or (_:_: {})) (
+              overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
                 hself: hsuper: {
                   mkDerivation = args: hsuper.mkDerivation (
                     args // {
@@ -52,33 +52,32 @@ let
                       }
                     );
 
-                  haskell-ide-engine = justStaticExecutables
-                    (
-                      overrideCabal
-                        hsuper.haskell-ide-engine
-                        (
-                          drv: {
-                            pname = "hie-ghc${undotted hself.ghc.version}";
+                  haskell-ide-engine = justStaticExecutables (
+                    overrideCabal
+                      hsuper.haskell-ide-engine
+                      (
+                        drv: {
+                          pname = "hie-ghc${undotted hself.ghc.version}";
 
-                            postInstall = drv.postInstall or "" + ''
-                              remove-references-to -t ${hself.ghc} $out/bin/hie{,-wrapper}
-                            '';
-                          }
-                        )
-                    );
+                          postInstall = drv.postInstall or "" + ''
+                            remove-references-to -t ${hself.ghc} $out/bin/hie{,-wrapper}
+                          '';
+                        }
+                      )
+                  );
                 }
               );
             }
           )
-      )
-      {
-        ghc-865 = (
+      ) {
+      ghc-865 =
+        (
           import ./hie/ghc-8.6.5.nix {
             pkgs = stable;
           }
         ).override (
           old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: {})) (
+            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
               hself: hsuper: {
                 # Disable GHC 8.6.x core libraries.
                 array = null;
@@ -118,13 +117,14 @@ let
           }
         );
 
-        ghc-882 = (
+      ghc-882 =
+        (
           import ./hie/ghc-8.8.2.nix {
             pkgs = unstable;
           }
         ).override (
           old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: {})) (
+            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
               hself: hsuper: {
                 # Disable GHC 8.8.x core libraries.
                 array = null;
@@ -164,13 +164,14 @@ let
           }
         );
 
-        ghc-883 = (
+      ghc-883 =
+        (
           import ./hie/ghc-8.8.3.nix {
             pkgs = unstable;
           }
         ).override (
           old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: {})) (
+            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
               hself: hsuper: {
                 # Disable GHC 8.8.x core libraries.
                 array = null;
@@ -209,7 +210,7 @@ let
             );
           }
         );
-      };
+    };
 
   hies = lib.mapAttrs (_: hie-pkg-set: hie-pkg-set.haskell-ide-engine) hie-pkg-sets;
 
@@ -222,19 +223,23 @@ let
       versioned = builtins.map
         (
           hie:
-            let
-              v = hie.compiler.version;
-              v-mm = lib.versions.majorMinor v;
-              priority = - lib.toInt (undotted v);
-              drv = lib.addMetaAttrs { inherit priority; } (
-                unstable.runCommandNoCCLocal hie.name {} ''
-                  mkdir -p $out/bin
-                  ln -s ${hie}/bin/hie $out/bin/hie-${v}
-                  ln -s ${hie}/bin/hie $out/bin/hie-${v-mm}
-                ''
-              );
-            in drv
-        ) selected;
+          let
+            v = hie.compiler.version;
+            v-mm = lib.versions.majorMinor v;
+            priority = - lib.toInt (undotted v);
+            drv = lib.addMetaAttrs
+              { inherit priority; } (
+              unstable.runCommandNoCCLocal hie.name
+                { } ''
+                mkdir -p $out/bin
+                ln -s ${hie}/bin/hie $out/bin/hie-${v}
+                ln -s ${hie}/bin/hie $out/bin/hie-${v-mm}
+              ''
+            );
+          in
+          drv
+        )
+        selected;
 
       newest = lib.head (
         lib.sort
@@ -264,9 +269,10 @@ let
         pathsToLink = [ "/bin" ];
       };
 
-      multi = unstable.runCommandNoCCLocal "hie-multi" {
-        nativeBuildInputs = [ unstable.makeWrapper ];
-      } ''
+      multi = unstable.runCommandNoCCLocal "hie-multi"
+        {
+          nativeBuildInputs = [ unstable.makeWrapper ];
+        } ''
         mkdir -p $out/bin
         cp ${newest}/bin/hie-wrapper $out/bin/hie
         ln -s hie $out/bin/hie-wrapper
@@ -274,7 +280,8 @@ let
         wrapProgram $out/bin/hie \
             --prefix PATH ":" "${lib.makeBinPath [ dummy hie-env ]}"
       '';
-    in if lib.length selected == 0
+    in
+    if lib.length selected == 0
     then throw "You must select at least one HIE version!"
     else multi;
 in

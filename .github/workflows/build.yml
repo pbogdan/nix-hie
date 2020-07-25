@@ -64,5 +64,4 @@ jobs:
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - run: >
-        nix build '(with import ./.; hie.compose (hies: hies))' -L
+    - run: nix build -f . composed -L

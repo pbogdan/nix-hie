@@ -1,6 +1,8 @@
 let
   sources = import ./nix/sources.nix;
-  pkgs = import sources.unstable { };
+in
+{ pkgs ? import sources.unstable { } }:
+let
   inherit (pkgs)
     mkShell
     writeShellScriptBin

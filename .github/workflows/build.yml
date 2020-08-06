@@ -47,6 +47,20 @@ jobs:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
     - run: nix build -f . hie.ghc-883 -L
+  ghc-884:
+    name: GHC 8.8.4
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Nix
+      uses: cachix/install-nix-action@v8
+    - name: Cachix
+      uses: cachix/cachix-action@v6
+      with:
+        name: nix-hie
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - run: nix build -f . hie.ghc-884 -L
   compose:
     name: Compose
     runs-on: ubuntu-latest
@@ -54,6 +68,7 @@ jobs:
     - ghc-865
     - ghc-882
     - ghc-883
+    - ghc-884
     steps:
     - name: Checkout
       uses: actions/checkout@v2

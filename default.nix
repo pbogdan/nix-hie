@@ -75,6 +75,19 @@ let
             );
           }
         );
+
+      ghc-884 =
+        (
+          import ./hie/ghc-8.8.4.nix {
+            inherit pkgs;
+          }
+        ).override (
+          old: {
+            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
+              _: _: (import ./overrides/base-8.8.x.nix)
+            );
+          }
+        );
     };
 
   hies = lib.mapAttrs (_: hie-pkg-set: hie-pkg-set.haskell-ide-engine) hie-pkg-sets;

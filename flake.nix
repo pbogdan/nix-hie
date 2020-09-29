@@ -16,17 +16,18 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        hie = import ./default.nix {
+        inherit (import ./default.nix {
           inherit pkgs;
-        };
+        })
+          hie;
       in
       {
-        packages = flake-utils.lib.flattenTree hie.hie;
+        packages = flake-utils.lib.flattenTree hie;
 
-        defaultPackage = hie.composed;
+        defaultPackage = hie.compose nixpkgs.lib.id;
 
         lib = {
-          inherit (hie.hie)
+          inherit (hie)
             compose
             ;
         };

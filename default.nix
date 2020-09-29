@@ -101,6 +101,9 @@ in
 {
   hie = lib.recurseIntoAttrs hies // {
     inherit compose;
+    lib = {
+      inherit compose;
+    };
   };
 
   composed = compose lib.id;

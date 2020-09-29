@@ -21,12 +21,12 @@
         };
       in
       {
-        packages = flake-utils.lib.flattenTree hie;
+        packages = flake-utils.lib.flattenTree hie.hie;
 
-        defaultPackage = self.packages.x86_64-linux.composed;
+        defaultPackage = hie.composed;
 
         lib = {
-          inherit (hie)
+          inherit (hie.hie)
             compose
             ;
         };

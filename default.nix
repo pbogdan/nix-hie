@@ -36,59 +36,60 @@ let
                 );
             }
           )
-      ) {
-      ghc-865 =
-        (
-          import ./hie/ghc-8.6.5.nix {
-            inherit pkgs;
-          }
-        ).override (
-          old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
-              _: _: (import ./overrides/base-8.6.x.nix)
-            );
-          }
-        );
+      )
+      {
+        ghc-865 =
+          (
+            import ./hie/ghc-8.6.5.nix {
+              inherit pkgs;
+            }
+          ).override (
+            old: {
+              overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
+                _: _: (import ./overrides/base-8.6.x.nix)
+              );
+            }
+          );
 
-      ghc-882 =
-        (
-          import ./hie/ghc-8.8.2.nix {
-            inherit pkgs;
-          }
-        ).override (
-          old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
-              _: _: (import ./overrides/base-8.8.x.nix)
-            );
-          }
-        );
+        ghc-882 =
+          (
+            import ./hie/ghc-8.8.2.nix {
+              inherit pkgs;
+            }
+          ).override (
+            old: {
+              overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
+                _: _: (import ./overrides/base-8.8.x.nix)
+              );
+            }
+          );
 
-      ghc-883 =
-        (
-          import ./hie/ghc-8.8.3.nix {
-            inherit pkgs;
-          }
-        ).override (
-          old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
-              _: _: (import ./overrides/base-8.8.x.nix)
-            );
-          }
-        );
+        ghc-883 =
+          (
+            import ./hie/ghc-8.8.3.nix {
+              inherit pkgs;
+            }
+          ).override (
+            old: {
+              overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
+                _: _: (import ./overrides/base-8.8.x.nix)
+              );
+            }
+          );
 
-      ghc-884 =
-        (
-          import ./hie/ghc-8.8.4.nix {
-            inherit pkgs;
-          }
-        ).override (
-          old: {
-            overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
-              _: _: (import ./overrides/base-8.8.x.nix)
-            );
-          }
-        );
-    };
+        ghc-884 =
+          (
+            import ./hie/ghc-8.8.4.nix {
+              inherit pkgs;
+            }
+          ).override (
+            old: {
+              overrides = lib.composeExtensions (old.overrides or (_:_: { })) (
+                _: _: (import ./overrides/base-8.8.x.nix)
+              );
+            }
+          );
+      };
 
   hies = lib.mapAttrs (_: hie-pkg-set: hie-pkg-set.haskell-ide-engine) hie-pkg-sets;
 

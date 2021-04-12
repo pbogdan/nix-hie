@@ -14,7 +14,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v12
     - name: Cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -28,7 +28,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v12
     - name: Cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -42,7 +42,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v12
     - name: Cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -56,7 +56,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v12
     - name: Cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -75,7 +75,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v12
     - name: Cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: nix-hie
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
